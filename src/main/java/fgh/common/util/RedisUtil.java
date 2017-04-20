@@ -3,6 +3,7 @@ package fgh.common.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -168,7 +169,7 @@ public class RedisUtil {
 			result = jedis.setex(key, seconds, value);
 		} catch (Exception e) {
 			logger.error(LOG_MAIN + "redis setExSecond error ,key[" + key + "],value[" + value + "],expire[" + seconds
-					+ "]");
+					+ "]",e);
 			returnResource(jedis);
 		} finally {
 			returnResource(jedis);
@@ -308,7 +309,7 @@ public class RedisUtil {
 			jedis = getJedis();
 			result = jedis.hset(key, field, value);
 		} catch (Exception e) {
-			logger.error(LOG_MAIN + "redis addHashSet error,key:" + key + ",field:" + field + ",value:" + value);
+			logger.error(LOG_MAIN + "redis addHashSet error,key:" + key + ",field:" + field + ",value:" + value,e);
 			returnResource(jedis);
 		} finally {
 			returnResource(jedis);
@@ -334,7 +335,7 @@ public class RedisUtil {
 			jedis = getJedis();
 			result = jedis.hincrBy(key, field, value);
 		} catch (Exception e) {
-			logger.error(LOG_MAIN + "redis hincrBy error,key:" + key + ",field:" + field + ",value:" + value);
+			logger.error(LOG_MAIN + "redis hincrBy error,key:" + key + ",field:" + field + ",value:" + value,e);
 			returnResource(jedis);
 		} finally {
 			returnResource(jedis);
@@ -360,7 +361,7 @@ public class RedisUtil {
 			jedis = getJedis();
 			result = jedis.hget(key, field);
 		} catch (Exception e) {
-			logger.error(LOG_MAIN + "redis getHashSetByKey error,key:" + key + ",field:" + field);
+			logger.error(LOG_MAIN + "redis getHashSetByKey error,key:" + key + ",field:" + field,e);
 			returnResource(jedis);
 		} finally {
 			returnResource(jedis);
@@ -382,7 +383,7 @@ public class RedisUtil {
 			jedis = getJedis();
 			result = jedis.hgetAll(key);
 		} catch (Exception e) {
-			logger.error(LOG_MAIN + "redis getHashSetAll error,key:" + key);
+			logger.error(LOG_MAIN + "redis getHashSetAll error,key:" + key,e);
 			returnResource(jedis);
 		} finally {
 			returnResource(jedis);
@@ -405,7 +406,7 @@ public class RedisUtil {
 			jedis = getJedis();
 			result = jedis.hmget(key, field);
 		} catch (Exception e) {
-			logger.error(LOG_MAIN + "redis getHmList,key=" + key+",field="+field);
+			logger.error(LOG_MAIN + "redis getHmList,key=" + key+",field="+field,e);
 			returnResource(jedis);
 		} finally {
 			returnResource(jedis);
@@ -428,7 +429,7 @@ public class RedisUtil {
 			jedis = getJedis();
 			result = jedis.hdel(key, field);
 		} catch (Exception e) {
-			logger.error(LOG_MAIN + "redis delHashSetByKey error,key:" + key + ",field:" + field);
+			logger.error(LOG_MAIN + "redis delHashSetByKey error,key:" + key + ",field:" + field,e);
 			returnResource(jedis);
 		} finally {
 			returnResource(jedis);
@@ -436,6 +437,144 @@ public class RedisUtil {
 		return result;
 	}
 
+	/**
+	 * Add the string value to the head (LPUSH) or tail (RPUSH) of the list stored at key. If the key does not exist an empty list is created just before the append operation. If the key exists but is not a List an error is returned. 
+	   Time complexity: O(1)
+	 * @param key
+	 * @param field
+	 * @return
+	 */
+	public static long lpush(String key, String... field) {
+		logger.info(LOG_MAIN + "redis lpush,key:" + key + ",field:" + field);
+		Jedis jedis = null;
+		long result = 0L;
+		try {
+			jedis = getJedis();
+			result = jedis.lpush(key, field);
+		} catch (Exception e) {
+			logger.error(LOG_MAIN + "redis lpush error,key:" + key + ",field:" + field,e);
+			returnResource(jedis);
+		} finally {
+			returnResource(jedis);
+		}
+		return result;
+	}
+	
+	/**
+	 * Add the string value to the head (LPUSH) or tail (RPUSH) of the list stored at key. If the key does not exist an empty list is created just before the append operation. If the key exists but is not a List an error is returned. 
+	  Time complexity: O(1)
+
+	 * @param key
+	 * @param field
+	 * @return Integer reply, specifically, the number of elements inside the list after the push operation.
+	 */
+	public static long rpush(String key, String... field) {
+		logger.info(LOG_MAIN + "redis rpush,key:" + key + ",field:" + field);
+		Jedis jedis = null;
+		long result = 0L;
+		try {
+			jedis = getJedis();
+			result = jedis.rpush(key, field);
+		} catch (Exception e) {
+			logger.error(LOG_MAIN + "redis rpush error,key:" + key + ",field:" + field,e);
+			returnResource(jedis);
+		} finally {
+			returnResource(jedis);
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+		Atomically return and remove the first (LPOP) or last (RPOP) element of the list. For example if the list contains the elements "a","b","c" LPOP will return "a" and the list will become "b","c". 
+		If the key does not exist or the list is already empty the special value 'nil' is returned.
+	 * @param key
+	 * @return
+	 */
+	public static String lpop(String key) {
+		logger.info(LOG_MAIN + "redis lpop,key:" + key);
+		Jedis jedis = null;
+		String result = null;
+		try {
+			jedis = getJedis();
+			result = jedis.lpop(key);
+		} catch (Exception e) {
+			logger.error(LOG_MAIN + "redis lpop error,key:" + key,e);
+			returnResource(jedis);
+		} finally {
+			returnResource(jedis);
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+		Atomically return and remove the first (LPOP) or last (RPOP) element of the list. For example if the list contains the elements "a","b","c" RPOP will return "c" and the list will become "a","b". 
+		If the key does not exist or the list is already empty the special value 'nil' is returned.
+	 * @param key
+	 * @return
+	 */
+	public static String rpop(String key) {
+		logger.info(LOG_MAIN + "redis rpop,key:" + key);
+		Jedis jedis = null;
+		String result = null;
+		try {
+			jedis = getJedis();
+			result = jedis.rpop(key);
+		} catch (Exception e) {
+			logger.error(LOG_MAIN + "redis rpop error,key:" + key,e);
+			returnResource(jedis);
+		} finally {
+			returnResource(jedis);
+		}
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @param key
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public static List<String> lrange(String key,long start,long end) {
+		logger.info(LOG_MAIN + "redis lrange,key:" + key +",start="+start+",end="+end);
+		Jedis jedis = null;
+		List<String> result = null;
+		try {
+			jedis = getJedis();
+			result = jedis.lrange(key, start, end);
+		} catch (Exception e) {
+			logger.error(LOG_MAIN + "redis lrange error,key:" + key +",start="+start+",end="+end,e);
+			returnResource(jedis);
+		} finally {
+			returnResource(jedis);
+		}
+		return result;
+	}
+	
+	/**
+	 * Return the length of the list stored at the specified key. If the key does not exist zero is returned (the same behaviour as for empty lists). If the value stored at key is not a list an error is returned. 
+	 * @param key
+	 * @return
+	 */
+	public static Long llen(String key) {
+		logger.info(LOG_MAIN + "redis llen,key:" + key);
+		Jedis jedis = null;
+		Long result = 0L;
+		try {
+			jedis = getJedis();
+			result = jedis.llen(key);
+		} catch (Exception e) {
+			logger.error(LOG_MAIN + "redis llen error,key:" + key,e);
+			returnResource(jedis);
+		} finally {
+			returnResource(jedis);
+		}
+		return result;
+	}
+
+	
 	// private static String getRedisHost() {
 	// return redisProp.getProperty("redis.host");
 	// }
@@ -479,7 +618,21 @@ public class RedisUtil {
 		// pool.close();
 		// Thread.sleep(110000000);
 
-		RedisUtil.set("test8", "test8");
+//		RedisUtil.set("test8", "test8");
+		
+		LinkedList<String> list = new LinkedList<String>();
+		list.add("a1");
+		list.add("a2");
+		list.add("a3");
+		list.add("a4");
+		list.add("a5");
 
+		String[] arr= new String[list.size()];
+		list.toArray(arr);
+//		RedisUtil.lpush("list2",arr );
+		
+//		RedisUtil.rpop("list2");
+		long len = RedisUtil.llen("list2");
+		System.out.println(len);
 	}
 }
