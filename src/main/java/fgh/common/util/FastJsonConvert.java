@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -20,6 +22,8 @@ public class FastJsonConvert {
 			SerializerFeature.WriteNullBooleanAsFalse, SerializerFeature.WriteNullListAsEmpty,
 			SerializerFeature.WriteNullNumberAsZero, SerializerFeature.WriteNullStringAsEmpty };
 
+	private static final Logger logger = LoggerFactory.getLogger(FastJsonConvert.class);
+	
 	/**
 	 * 
 	 * <b>方法名称：</b>JSON字符串转换成对象<br>
@@ -33,7 +37,7 @@ public class FastJsonConvert {
 			T t = JSON.parseObject(data, clazz);
 			return t;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return null;
 		}
 	}
@@ -48,7 +52,7 @@ public class FastJsonConvert {
 			T t = JSONObject.toJavaObject(data, clazz);
 			return t;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return null;
 		}
 	}
@@ -66,7 +70,7 @@ public class FastJsonConvert {
 			List<T> t = JSON.parseArray(data,clazz);
 			return t;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return null;
 		}
 	}
@@ -87,7 +91,7 @@ public class FastJsonConvert {
 			}
 			return t;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return null;
 		}
 	}
@@ -102,7 +106,7 @@ public class FastJsonConvert {
 			String text = JSON.toJSONString(obj);
 			return text;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return null;
 		}
 	}
@@ -117,9 +121,23 @@ public class FastJsonConvert {
 			JSONObject jsonObject = (JSONObject) JSONObject.toJSON(obj);
 			return jsonObject;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return null;
 		}
+	}
+	
+	/**
+	 * json字符串转换成JSONObject
+	 * @param json
+	 * @return
+	 */
+	public static JSONObject convertString2JSONObject(String json) {
+		try {
+			return JSONObject.parseObject(json);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		return null;
 	}
 
 	/**
@@ -132,7 +150,7 @@ public class FastJsonConvert {
 			String text = JSON.toJSONString(obj, featuresWithNullValue);
 			return text;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 			return null;
 		}
 	}
