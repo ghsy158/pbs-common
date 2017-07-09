@@ -188,13 +188,13 @@ public class EncryptUtil {
 
 	public static void main(String[] args) {
 		try {
-			String test = "123456";
+			String test = "13693276471";
 			// DESPlus des = new DESPlus();//默认密钥
 			String des = EncryptUtil.getInstance().encrypt(test);
 //			System.out.println("加密前的字符：" + test);
 			System.out.println("加密后的字符：" + des);
 //			System.out.println("加密后的字符长度：" + des.length());
-//			System.out.println("解密后的字符：" + EncryptUtil.getInstance().decrypt("e10adc3949ba59abbe56e057f20f883e"));
+			System.out.println("解密后的字符：" + EncryptUtil.getInstance().decrypt("1bda5755a75dc43f88f17b62127599d4"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

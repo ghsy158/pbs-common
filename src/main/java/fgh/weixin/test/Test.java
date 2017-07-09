@@ -11,7 +11,7 @@ import fgh.weixin.util.WeixinConstant;
 
 public class Test {
 
-	@org.junit.Test
+//	@org.junit.Test
 	public void testSendNewsMsg() {
 		NewsMessage msg = new NewsMessage();
 		msg.setAgentid(43);

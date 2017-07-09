@@ -1,4 +1,4 @@
-锘縫ackage com.qq.weixin.mp.aes;
+package com.qq.weixin.mp.aes;
 
 @SuppressWarnings("serial")
 public class AesException extends Exception {
@@ -21,27 +21,27 @@ public class AesException extends Exception {
 	private static String getMessage(int code) {
 		switch (code) {
 		case ValidateSignatureError:
-			return "绛惧悕楠岃瘉閿欒";
+			return "签名验证错误";
 		case ParseXmlError:
-			return "xml瑙ｆ瀽澶辫触";
+			return "xml解析失败";
 		case ComputeSignatureError:
-			return "sha鍔犲瘑鐢熸垚绛惧悕澶辫触";
+			return "sha加密生成签名失败";
 		case IllegalAesKey:
-			return "SymmetricKey闈炴硶";
+			return "SymmetricKey非法";
 		case ValidateCorpidError:
-			return "corpid鏍￠獙澶辫触";
+			return "corpid校验失败";
 		case EncryptAESError:
-			return "aes鍔犲瘑澶辫触";
+			return "aes加密失败";
 		case DecryptAESError:
-			return "aes瑙ｅ瘑澶辫触";
+			return "aes解密失败";
 		case IllegalBuffer:
-			return "瑙ｅ瘑鍚庡緱鍒扮殑buffer闈炴硶";
+			return "解密后得到的buffer非法";
 //		case EncodeBase64Error:
-//			return "base64鍔犲瘑閿欒";
+//			return "base64加密错误";
 //		case DecodeBase64Error:
-//			return "base64瑙ｅ瘑閿欒";
+//			return "base64解密错误";
 //		case GenReturnXmlError:
-//			return "xml鐢熸垚澶辫触";
+//			return "xml生成失败";
 		default:
 			return null; // cannot be
 		}
